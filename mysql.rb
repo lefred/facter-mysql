@@ -12,16 +12,24 @@
  
 # mysql command line to execute queries
 mysqlcmd = 'mysql -B -N -e'
- 
+#status = %x[#{mysqlcmd} "SHOW STATUS"].to_s.strip
+status = %x[#{mysqlcmd} "SHOW STATUS"].split("\n")
+
 Facter.add(:mysql_version) do
   setcode do
     isinstalled = false
     os = Facter.value('operatingsystem')
     case os
       when "RedHat", "CentOS", "SuSE", "Fedora"
-        isinstalled = system "rpm -q mysql >/dev/null 2>&1"
+        isinstalled = system "rpm -q mysql-server >/dev/null 2>&1"
+        if not isinstalled then
+            isinstalled = system "rpm -q Percona-server >/dev/null 2>&1"
+        end
       when "Debian", "Ubuntu"
         isinstalled = system "dpkg -l mysql-server 2>&1 | egrep '(^ii|^hi)' >/dev/null"
+        if not isinstalled then
+            isinstalled = system "dpkg -l Percona-server 2>&1 | egrep '(^ii|^hi)' >/dev/null"
+        end
       else
     end
     if isinstalled then
@@ -33,10 +41,12 @@ end
 mysqlversion = Facter.value('mysql_version')
 
 if mysqlversion then
-  Facter.add(:mysql_threads_connected) do
-    setcode do
-      threadsconnected = %x[#{mysqlcmd} "SHOW STATUS LIKE 'threads_connected'"].to_s.strip
-      threadsconnected.sub('Threads_connected','').strip
+    status.each do|n|
+      el=n.split("\t")
+      Facter.add("mysql_#{el[0]}") do
+        setcode do
+            el[1]
+        end
+      end
     end
-  end
 end
