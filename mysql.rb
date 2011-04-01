@@ -5,7 +5,7 @@
 # <lefred.descamps@gmail.com>
 # http://www.lefred.be/
 
-# this code is hosted on github :
+# this code is hosted on github : https://github.com/lefred/facter-mysql
 
 # this file should be installed in your facter directory, for example on a fedora 14 it is
 # in /usr/lib/ruby/site_ruby/1.8/facter
