@@ -13,9 +13,10 @@
 
 This facter allows you to retrieve information from MySQL.
 
-For the moment the version (mysql_version) and all the returned values
+For the moment the version (mysql_version), all the returned values
 of SHOW STATUS are available as a fact (prefixed with mysql_), so 
-"open_files" becomes "mysql_open_files".
+"open_files" becomes "mysql_open_files" and
+the returned values of SHOW SLAVE STATUS prefixec with mysql_replica_ 
 
 The goal of this facter was to be able to use it within mcollective.
 
@@ -94,4 +95,22 @@ Report for fact: mysql_threads_connected
   Discovery Time: 2001.73ms
       Agent Time: 50.43ms
       Total Time: 2052.15ms
+
+[root@delvaux facter]# mc-facts mysql_replica_slave_sql_running -v
+Determining the amount of hosts matching filter for 2 seconds .... 3
+Report for fact: mysql_replica_slave_sql_running
+
+         Yes                                    found 2 times
+
+            debian1
+            debian2
+
+
+---- rpc stats ----
+           Nodes: 3 / 3
+     Pass / Fail: 0 / 0
+      Start Time: Sat Apr 02 23:22:31 +0200 2011
+  Discovery Time: 2005.77ms
+      Agent Time: 51.02ms
+      Total Time: 2056.79ms
 

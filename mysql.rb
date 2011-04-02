@@ -15,6 +15,8 @@
 mysqlcmd = 'mysql -B -N -e'
 #status = %x[#{mysqlcmd} "SHOW STATUS"].to_s.strip
 status = %x[#{mysqlcmd} "SHOW STATUS"].split("\n")
+replica = %x[#{mysqlcmd} "SHOW SLAVE STATUS\\G"].split("\n")
+
 
 Facter.add(:mysql_version) do
   setcode do
@@ -45,6 +47,14 @@ if mysqlversion then
     status.each do|n|
       el=n.split("\t")
       Facter.add("mysql_#{el[0]}") do
+        setcode do
+            el[1]
+        end
+      end
+    end
+    replica.each do|n|
+      el=n.split(":")
+      Facter.add("mysql_replica_#{el[0].to_s.strip}") do
         setcode do
             el[1]
         end
