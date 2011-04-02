@@ -1,9 +1,10 @@
 # mysql.rb
 # Facts related to MySQL status
 #
-# Frederic -lefred- Descamps
+# Author: Frederic -lefred- Descamps
 # <lefred.descamps@gmail.com>
 # http://www.lefred.be/
+# license: GPLv2
 
 # this code is hosted on github : https://github.com/lefred/facter-mysql
 

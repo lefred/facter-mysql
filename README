@@ -1,0 +1,97 @@
+# mysql.rb
+# Facts related to MySQL status
+#
+# Author: Frederic -lefred- Descamps
+# <lefred.descamps@gmail.com>
+# http://www.lefred.be/
+# license: GPLv2
+
+# this code is hosted on github : https://github.com/lefred/facter-mysql
+
+# mysql.rb should be installed in your facter directory, for example on a fedora 14 it is
+# in /usr/lib/ruby/site_ruby/1.8/facter
+
+This facter allows you to retrieve information from MySQL.
+
+For the moment the version (mysql_version) and all the returned values
+of SHOW STATUS are available as a fact (prefixed with mysql_), so 
+"open_files" becomes "mysql_open_files".
+
+The goal of this facter was to be able to use it within mcollective.
+
+
+Some examples:
+=============
+with facter:
+------------
+[root@delvaux facter]# facter mysql_version 2>/dev/null
+5.5.10
+[root@delvaux facter]# facter mysql_max_used_connections 2>/dev/null
+3
+
+with mcollective:
+-----------------
+[root@delvaux facter]# mc-facts mysql_version
+Report for fact: mysql_version
+
+        5.0.51a-24+lenny5-log                   found 1 times
+        5.5.10                                  found 1 times
+
+Finished processing 2 / 2 hosts in 64.36 ms
+
+
+
+[root@delvaux facter]# mc-facts mysql_open_files
+Report for fact: mysql_open_files
+
+        16                                      found 1 times
+        18                                      found 1 times
+
+Finished processing 2 / 2 hosts in 2418.13 ms
+
+[root@delvaux facter]# mc-facts mysql_open_files -v
+Determining the amount of hosts matching filter for 2 seconds .... 2
+Report for fact: mysql_open_files
+
+        16                                      found 1 times
+
+            delvaux.maladree.be
+
+        18                                      found 1 times
+
+            debian1.maladree.be
+
+
+---- rpc stats ----
+           Nodes: 2 / 2
+     Pass / Fail: 0 / 0
+      Start Time: Sat Apr 02 00:11:46 +0200 2011
+  Discovery Time: 2001.84ms
+      Agent Time: 1344.24ms
+      Total Time: 3346.08ms
+
+[root@delvaux facter]# mc-facts mysql_threads_connected 
+Report for fact: mysql_threads_connected
+
+        2                                       found 2 times
+
+Finished processing 2 / 2 hosts in 3270.86 ms
+
+[root@delvaux facter]# mc-facts mysql_threads_connected -v
+Determining the amount of hosts matching filter for 2 seconds .... 2
+Report for fact: mysql_threads_connected
+
+        2                                       found 2 times
+
+            debian1.maladree.be
+            delvaux.maladree.be
+
+
+---- rpc stats ----
+           Nodes: 2 / 2
+     Pass / Fail: 0 / 0
+      Start Time: Sat Apr 02 00:12:47 +0200 2011
+  Discovery Time: 2001.73ms
+      Agent Time: 50.43ms
+      Total Time: 2052.15ms
+
