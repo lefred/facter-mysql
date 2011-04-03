@@ -20,6 +20,12 @@ the returned values of SHOW SLAVE STATUS prefixec with mysql_replica_
 
 The goal of this facter was to be able to use it within mcollective.
 
+INFO: the username and password used to connect to the mysql server
+      should be present in the [client] version of the my.cnf
+      example:
+        [client]
+        username=lefred
+        password=mysqlisgreat
 
 Some examples:
 =============
