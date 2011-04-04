@@ -26,7 +26,7 @@ Facter.add(:mysql_version) do
       when "RedHat", "CentOS", "SuSE", "Fedora"
         isinstalled = system "rpm -q mysql-server >/dev/null 2>&1"
         if not isinstalled then
-            isinstalled = system "rpm -q Percona-server >/dev/null 2>&1"
+            isinstalled = system "rpm -qa Percona-Server-server >/dev/null 2>&1"
         end
       when "Debian", "Ubuntu"
         isinstalled = system "dpkg -l mysql-server 2>&1 | egrep '(^ii|^hi)' >/dev/null"
