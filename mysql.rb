@@ -44,6 +44,11 @@ end
 mysqlversion = Facter.value('mysql_version')
 
 if mysqlversion then
+    Facter.add(:mysql_version_server) do
+        setcode do
+            %x[#{mysqlcmd} "SELECT @@VERSION_COMMENT"].to_s.strip
+        end
+    end
     status.each do|n|
       el=n.split("\t")
       Facter.add("mysql_#{el[0]}") do
