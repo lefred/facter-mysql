@@ -24,15 +24,17 @@ Facter.add(:mysql_version) do
     os = Facter.value('operatingsystem')
     case os
       when "RedHat", "CentOS", "SuSE", "Fedora"
-        isinstalled = system "rpm -q mysql-server >/dev/null 2>&1"
-        if not isinstalled then
-            isinstalled = system "rpm -qa Percona-Server-server >/dev/null 2>&1"
-        end
+        [ 'mysql-server', 'MySQL-server-percona', 'Percona-Server-server' ].each { |dbtype|
+          if isinstalled then next
+          isinstalled = system "rpm -qa #{dbtype}\* >/dev/null 2>&1"
+          end
+        }
       when "Debian", "Ubuntu"
-        isinstalled = system "dpkg -l mysql-server 2>&1 | egrep '(^ii|^hi)' >/dev/null"
-        if not isinstalled then
-            isinstalled = system "dpkg -l Percona-server 2>&1 | egrep '(^ii|^hi)' >/dev/null"
-        end
+        ['mysql-server', 'Percona-server'].each { |dbtype|
+          if isinstalled then next
+          isinstalled = system "dpkg -l #{dbtype} 2>&1 | egrep '(^ii|^hi)' >/dev/null"
+          end
+        }
       else
     end
     if isinstalled then
